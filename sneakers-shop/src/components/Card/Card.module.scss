@@ -1,4 +1,5 @@
 .card {
+    position: relative;
     margin-right: 30px;
     margin-bottom: 30px;
     border: 1px solid #f3f3f3;
@@ -21,6 +22,12 @@
     .favorite {
         position: absolute;
         cursor: pointer;
+        transform: translate(-12px, -12px);
+
+        img {
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+        }
     }
 
     span {
@@ -32,7 +39,6 @@
     b {
         font-size: 14px;
     }
-
 }
 
 .button {
@@ -43,4 +49,9 @@
     height: 32px;
     width: 32px;
     cursor: pointer;
+}
+
+.btnChecked {
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
 }

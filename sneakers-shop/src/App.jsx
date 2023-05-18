@@ -1,42 +1,80 @@
 import React, { useEffect, useState } from 'react'
 import './index.scss'
-import Card from './components/Card/Card'
 import Header from './components/Header/Header'
 import CartDrawer from './components/CartDrawer/CartDrawer'
-
+import axios from 'axios'
+import { Route, Routes } from 'react-router-dom'
+import Home from './components/pages/Home'
+import Favorites from './components/pages/Favorites'
 
 
 const App = () => {
   const [items, setItems] = useState([])
   const [cartItems, setCartItems] = useState([])
   const [cartOpener, setCartOpener] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+  const [favorites, setFavorites] = useState([
+    {
+      "id": 1,
+      "name": "Мужские Кроссовки Nike Blazer Mid Suede",
+      "price": 12999,
+      "image": "img/sneakers/1.png"
+    },
+    {
+      "id": 2,
+      "name": "Мужские Кроссовки Nike Air Max 270",
+      "price": 15000,
+      "image": "img/sneakers/2.png"
+    },
+  ])
 
   const showCart = () => {
     setCartOpener(!cartOpener)
   }
 
   useEffect(() => {
-    fetch('https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/items')
+    axios.get(`https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/items`)
       .then(res => {
-        return res.json()
+        setItems(res.data)
       })
-      .then((items) => {
-        setItems(items)
+    axios.get(`https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/cart`)
+      .then(res => {
+        setCartItems(res.data)
       })
   }, [])
 
-  const onAddToCart = (obj) => {
-    setCartItems((prev) => [...prev, obj])
+  const onAddToCart = async (obj) => {
+    try {
+      setCartItems((prev) => [...prev, obj])
+      const { data } = await axios.post(`https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/cart`, obj)
+    } catch (error) {
+      alert('Не удалось добавить в корзину. Попробуйте еще раз')
+    }
   }
 
-  const deleteFromCart = (id) => {
-    setCartItems((prev) => {
-      if (cartItems) {
-        return [...prev.filter(item => item.id != id)]
-      }
-    })
+  const deleteFromCart = async (id) => {
+    try {
+      const { data } = await axios.delete(`https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/cart/${id}`)
+      setCartItems((prev) => prev.filter(item => item.id !== id))
+    } catch (error) {
+      alert('Не удалось удалить из корзины. Попробуйте еще раз')
+
+    }
   }
 
+  const onChangeSearch = (e) => {
+    setSearchValue(e.target.value)
+  }
+
+  const onAddToFavorite = (obj) => {
+    if (favorites.find(favObj => favObj.id === obj.id)) {
+      // axios.delete(`https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/favorites/${obj.id}`)
+
+    } else {
+      setFavorites((prev) => [...prev, obj])
+    }
+    // axios.post(`https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/favorites`, obj)
+  }
 
   return (
     <div className='wrapper clear'>
@@ -47,30 +85,19 @@ const App = () => {
         deleteFromCart={deleteFromCart} />}
 
       <Header showCart={showCart} />
+      <Routes>
+        <Route path='/' element={
+          <Home
+            items={items}
+            searchValue={searchValue}
+            onChangeSearch={onChangeSearch}
+            setSearchValue={setSearchValue}
+            onAddToFavorite={onAddToFavorite}
+            onAddToCart={onAddToCart} />}
+        />
+        <Route path='/favorites' element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart} />} />
+      </Routes>
 
-      <div className='content p-40'>
-        <div className='d-flex align-center mb-40 justify-between'>
-          <h1 className=''>Все кроссовки</h1>
-          <div className='searchBlock d-flex'>
-            <img src="/img/search.svg" alt="Search" />
-            <input type="search" placeholder='Поиск...' />
-          </div>
-        </div>
-
-        <div className='d-flex cardContainer'>
-          {
-            items.map(s =>
-              <Card
-                key={s.id}
-                name={s.name}
-                price={s.price}
-                image={s.image}
-                id={s.id}
-                addToFavorite={() => console.log('first')}
-                addToCart={onAddToCart} />)
-          }
-        </div>
-      </div>
     </div>
   )
 }

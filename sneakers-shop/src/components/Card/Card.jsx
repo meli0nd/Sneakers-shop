@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import s from './Card.module.scss'
 
-const Card = ({ name, price, image, id, addToFavorite, addToCart }) => {
+const Card = ({ name, price, image, id, addToCart, onAddToFavorite, favorited }) => {
 
     const [isAdded, setIsAdded] = useState(false)
+    const [isFavorite, setIsFavorite] = useState(favorited)
 
     const setChecked = () => {
         addToCart({ name, price, image, id })
         setIsAdded(!isAdded)
     }
 
-    useEffect(() => { '' }, [isAdded])
+    const addToFavorite = () => {
+        onAddToFavorite({ name, price, image, id })
+        setIsFavorite(!isFavorite)
+    }
+
+    useEffect(() => { '' }, [isAdded, isFavorite])
 
     return (
-        <div className={s.card + ' mb-20'}>
+        <div className={s.card + ' mb-20'} onDoubleClick={addToFavorite}>
             <div className={s.favorite} onClick={addToFavorite}>
-                <img src="/img/heart-unliked.svg" alt="Favorite" />
+                <img width={37}
+                    height={37}
+                    src={isFavorite ? "/img/heart-liked.svg" : "/img/heart-unliked.svg"}
+                    alt="Favorite" />
             </div>
             <img width={133} height={112} src={image} alt="Sneaker-2" />
             <h5>{name}</h5>
@@ -25,7 +34,7 @@ const Card = ({ name, price, image, id, addToFavorite, addToCart }) => {
                     <b>{price} руб.</b>
                 </div>
                 <img
-                    className='cu-p'
+                    className={s.btnChecked + ' cu-p'}
                     onClick={setChecked}
                     width={32}
                     height={32}
