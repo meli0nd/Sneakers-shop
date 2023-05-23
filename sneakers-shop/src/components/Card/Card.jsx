@@ -60,8 +60,8 @@ const Card = ({
               height={37}
               src={
                 isItemInFavorite(id)
-                  ? "/img/heart-liked.svg"
-                  : "/img/heart-unliked.svg"
+                  ? "../../assets/img/heart-liked.svg"
+                  : "../../assets/img/heart-unliked.svg"
               }
               alt="Favorite"
             />
@@ -79,7 +79,9 @@ const Card = ({
               width={32}
               height={32}
               src={
-                isItemInCart(id) ? "/img/btn-checked.svg" : "/img/btn-plus.svg"
+                isItemInCart(id)
+                  ? "../../assets/img/btn-checked.svg"
+                  : "../../assets/img/btn-plus.svg"
               }
               alt="addToCart"
             />

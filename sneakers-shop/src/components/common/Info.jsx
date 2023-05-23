@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { AppContext } from "../../App";
-import s from "../CartDrawer/CartDrawer.module.scss";
-import "macro-css";
+import React, { useContext } from "react"
+import { AppContext } from "../../App"
+import s from "../CartDrawer/CartDrawer.module.scss"
+import "macro-css"
 
 const Info = ({ title, description, image }) => {
-  const { setCartOpener } = useContext(AppContext);
+  const { setCartOpener } = useContext(AppContext)
 
   return (
     <div
@@ -16,11 +16,11 @@ const Info = ({ title, description, image }) => {
       <h2>{title}</h2>
       <p className="opacity-6">{description}</p>
       <button className={s.greenButton} onClick={() => setCartOpener(false)}>
-        <img src="/img/arrow.svg" alt="arrow" />
+        <img src="../../assets/img/arrow.svg" alt="arrow" />
         Вернуться назад
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Info;
+export default Info

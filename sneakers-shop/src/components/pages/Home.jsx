@@ -1,5 +1,5 @@
-import React from "react";
-import Card from "../Card/Card";
+import React from "react"
+import Card from "../Card/Card"
 
 const Home = ({
   items,
@@ -13,7 +13,7 @@ const Home = ({
     // making item's title from array and input's value lower case to work with search logic
     const filteredItems = items.filter((item) =>
       item.name.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    )
 
     // working with react-content-loader. If items array is empty then fake array will be added to show loading
     return (isLoading ? [...Array(8)] : filteredItems).map((sneaker, index) => {
@@ -25,9 +25,9 @@ const Home = ({
           onAddToFavorite={onAddToFavorite}
           {...sneaker}
         />
-      );
-    });
-  };
+      )
+    })
+  }
 
   return (
     <div className="content p-40">
@@ -36,7 +36,7 @@ const Home = ({
           {searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}
         </h1>
         <div className="searchBlock d-flex">
-          <img src="/img/search.svg" alt="Search" />
+          <img src="../../assets/img/search.svg" alt="Search" />
           <input
             type="search"
             placeholder="Поиск..."
@@ -48,7 +48,7 @@ const Home = ({
 
       <div className="d-flex cardContainer">{renderItems()}</div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
