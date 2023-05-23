@@ -1,47 +1,49 @@
-import React, { useContext, useEffect, useState } from "react";
-import s from "./CartDrawer.module.scss";
-import { AppContext } from "../../App";
-import Info from "../common/Info";
-import axios from "axios";
+import React, { useEffect, useState } from "react"
+import s from "./CartDrawer.module.scss"
+import Info from "../common/Info"
+import axios from "axios"
+import { useCart } from "../hooks/useCart"
 
-const CartDrawer = ({ showCart, deleteFromCart }) => {
-  const [isOrderCompleted, setIsOrderCompleted] = useState(false);
-  const { cartItems, setCartItems } = useContext(AppContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const orderId = Math.trunc(Math.random() * 1000);
+const CartDrawer = ({ showCart, deleteFromCart, opened }) => {
+  const [isOrderCompleted, setIsOrderCompleted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const orderId = Math.trunc(Math.random() * 1000)
+  const { cartItems, setCartItems, totalPrice } = useCart()
 
   const onClickOrder = async () => {
     try {
-      setIsLoading(true);
-      const fetchFromLS = JSON.parse(localStorage.getItem("orders")) || [];
-      const arrayToPush = [...cartItems, "Номер заказа: " + orderId];
-      const LSArray = [...fetchFromLS, arrayToPush];
-      localStorage.setItem("orders", JSON.stringify(LSArray));
+      setIsLoading(true)
+      // taking array from LS, then adding it to new mutated array and pushing it back
+      const fetchFromLS = JSON.parse(localStorage.getItem("orders")) || []
+      const arrayToPush = { items: cartItems, orderId }
+      const LSArray = [...fetchFromLS, arrayToPush]
+      localStorage.setItem("orders", JSON.stringify(LSArray))
 
+      // clearing server cart after sending the order
       for (let i = 0; i < cartItems.length; i++) {
-        const item = cartItems[i];
+        const item = cartItems[i]
         await axios.delete(
           "https://6465c1f7228bd07b3551ac58.mockapi.io/api/1/cart/" + item.id
-        );
+        )
       }
-
-      setIsOrderCompleted(true);
-      setCartItems([]);
+      // to show that order was sended to proccess
+      setIsOrderCompleted(true)
+      // clearing UI cart after await functions
+      setCartItems([])
     } catch (error) {
-      alert("Ошибка при создании заказа.");
-      window.location.reload();
+      alert("Ошибка при создании заказа.")
+      window.location.reload()
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   const deleteItem = (id) => {
-    deleteFromCart(id);
-  };
+    deleteFromCart(id)
+  }
 
-  useEffect(() => {}, [cartItems]);
-
+  useEffect(() => {}, [cartItems])
   return (
-    <div className={s.overlay}>
+    <div className={`${s.overlay} ${opened ? `${s.overlayVisible}` : ""}`}>
       <div className={s.drawer + "  d-flex flex-column"}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
@@ -77,20 +79,20 @@ const CartDrawer = ({ showCart, deleteFromCart }) => {
                       alt="removeFromCart"
                     />
                   </div>
-                );
+                )
               })}
             </div>
             <div className={s.cartTotalBlock}>
               <ul>
                 <li>
-                  <span>Итого</span>
-                  <div></div>
-                  <b>21 498 руб.</b>
-                </li>
-                <li>
                   <span>Налог 5%</span>
                   <div></div>
-                  <b>1074 руб.</b>
+                  <b>{Math.trunc(totalPrice * 0.05)} руб.</b>
+                </li>
+                <li>
+                  <span>Итого</span>
+                  <div></div>
+                  <b>{Math.trunc(totalPrice - totalPrice * 0.05)} руб.</b>
                 </li>
               </ul>
               <button
@@ -119,7 +121,7 @@ const CartDrawer = ({ showCart, deleteFromCart }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CartDrawer;
+export default CartDrawer

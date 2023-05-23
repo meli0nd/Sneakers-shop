@@ -5,10 +5,6 @@ import { AppContext } from "../../App";
 const Favorites = ({ onAddToCart }) => {
   const { favorites, onAddToFavorite } = useContext(AppContext);
 
-  useEffect(() => {
-    "";
-  }, [favorites]);
-
   return (
     <div className="content p-40">
       <div className="d-flex align-center mb-40 justify-between">

@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react"
 
-import s from "./Card.module.scss";
+import s from "./Card.module.scss"
 
-import ContentLoader from "react-content-loader";
+import ContentLoader from "react-content-loader"
 
-import { AppContext } from "../../App";
+import { AppContext } from "../../App"
 
 const Card = ({
   id,
@@ -17,20 +17,22 @@ const Card = ({
   loading = false,
 }) => {
   //  taking boolean type from App's function that connecting cart and Home items to work with adding
-  const { isItemInCart, isItemInFavorite } = useContext(AppContext);
+  const { isItemInCart, isItemInFavorite } = useContext(AppContext)
 
-  const [isFavorite, setIsFavorite] = useState(favorited);
+  const [isFavorite, setIsFavorite] = useState(favorited)
+
+  const object = { name, price, image, id, parentId: id }
 
   // function that returns object that assumes to be added to cart and posting to server
   const addedToCart = () => {
-    addToCart({ name, price, image, id });
-  };
+    addToCart(object)
+  }
 
   // function that returns object that assumes to be added to favorites and posting to server
   const addToFavorite = () => {
-    onAddToFavorite({ name, price, image, id });
-    setIsFavorite(!isFavorite);
-  };
+    onAddToFavorite(object)
+    setIsFavorite(!isFavorite)
+  }
 
   return (
     <div className={s.card + " mb-20"} onDoubleClick={addToFavorite}>
@@ -85,7 +87,7 @@ const Card = ({
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card
