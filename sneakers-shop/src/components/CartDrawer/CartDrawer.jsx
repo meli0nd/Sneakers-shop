@@ -50,7 +50,7 @@ const CartDrawer = ({ showCart, deleteFromCart, opened }) => {
           <img
             onClick={showCart}
             className={s.removeBtn + " cu-p"}
-            src="../../assets/img/btn-remove.svg"
+            src="img/btn-remove.svg"
             alt="CloseCart"
           />
         </h2>
@@ -75,7 +75,7 @@ const CartDrawer = ({ showCart, deleteFromCart, opened }) => {
                     <img
                       onClick={() => deleteItem(i.id)}
                       className={s.removeBtn + " cu-p"}
-                      src="../../assets/img/btn-remove.svg"
+                      src="img/btn-remove.svg"
                       alt="removeFromCart"
                     />
                   </div>
@@ -100,8 +100,7 @@ const CartDrawer = ({ showCart, deleteFromCart, opened }) => {
                 className={s.greenButton}
                 onClick={onClickOrder}
               >
-                Оформить заказ{" "}
-                <img src="../../assets/img/arrow.svg" alt="Arrow" />
+                Оформить заказ <img src="img/arrow.svg" alt="Arrow" />
               </button>
             </div>
           </>
@@ -114,9 +113,7 @@ const CartDrawer = ({ showCart, deleteFromCart, opened }) => {
                 : "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
             }
             image={
-              isOrderCompleted
-                ? "../../assets/img/complete-order.png"
-                : "../../assets/img/empty-cart.png"
+              isOrderCompleted ? "img/complete-order.png" : "img/empty-cart.png"
             }
           />
         )}
